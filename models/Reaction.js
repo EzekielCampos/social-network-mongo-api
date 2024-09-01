@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const {formatDate} = require('../helpers/dateFormat')
+const { formatDate } = require('../helpers/dateFormat');
 
 const reactionSchema = new Schema({
   reactionId: {
@@ -10,7 +10,7 @@ const reactionSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
-    get:formatDate
+    get: formatDate,
   },
   username: {
     type: String,
@@ -18,5 +18,4 @@ const reactionSchema = new Schema({
   },
 });
 
-
-module.exports = {reactionSchema}
+module.exports = { reactionSchema };

@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const routes = require('./routes')
+const routes = require('./routes');
 
 const db = require('./config/connection');
 
@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-app.use(routes)
+app.use(routes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
