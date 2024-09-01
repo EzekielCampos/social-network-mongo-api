@@ -13,7 +13,7 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       required: true,
-      set: toLower,
+      lowercase:true,
       validate: {
         validator: validator.isEmail,
         message: (props) => `${props.value} is not a valid email!`,
@@ -41,6 +41,9 @@ const userSchema = new Schema(
 );
 
 userSchema.virtual('friendCount').get(() => {
+  if(!this.friends){
+    return 0;
+  }
   return this.friends.length;
 });
 
