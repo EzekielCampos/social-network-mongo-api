@@ -80,4 +80,40 @@ module.exports = {
       res.stauts(500).json(error);
     }
   },
+
+  async createReaction(req, res) {
+    try {
+      const thoughtReaction = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        {
+          $addToSet: { reactions: req.body },
+        },
+        { new: true }
+      );
+
+      if (!thoughtReaction) {
+        return res.status(400).json({ message: 'No thought found at that ID' });
+      }
+      res.status(200).json(thoughtReaction);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  async deleteReaction(req, res) {
+    try {
+      const deleted = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        { $pull: { reactionId: req.params.reactionId } },
+        { new: true }
+      );
+
+      if (!deleted) {
+        return res.status(404).json({ message: 'No thought found at that ID' });
+      }
+      res.status(200).json(deleted);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };
