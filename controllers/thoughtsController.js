@@ -3,7 +3,7 @@ const { User, Thought } = require('../models');
 module.exports = {
   async getThoughts(req, res) {
     try {
-      const allThoughts = await Thought.find({});
+      const allThoughts = await Thought.find({}).select('-__v');
       if (!allThoughts) {
         return res.status(404).json({ message: 'No thoughts found' });
       }
@@ -29,6 +29,7 @@ module.exports = {
           message: 'Thought created, but found no user with that username',
         });
       }
+      res.status(200).json(userThought);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -36,11 +37,10 @@ module.exports = {
 
   async getSingleThought(req, res) {
     try {
-      const thought = await Thought.findById(req.params.thoughtId);
+      const thought = await Thought.findById(req.params.thoughtId).select('-__v');
       if (!thought) {
         return res.status(404).json({ message: 'Thought cannot be found with that ID' });
       }
-
       res.status(200).json(thought);
     } catch (error) {
       res.status(500).json(error);
@@ -51,7 +51,7 @@ module.exports = {
     try {
       const updated = await Thought.findByIdAndUpdate(
         req.params.thoughtId,
-        { thoughtText: req.body },
+        { thoughtText: req.body.thoughtText },
         { new: true }
       );
       if (!updated) {
@@ -67,7 +67,7 @@ module.exports = {
     try {
       const deleted = await Thought.findByIdAndDelete(req.params.thoughtId);
       const user = await User.findOneAndUpdate(
-        { username: req.body.username },
+        { username: deleted.username },
         { $pull: { thoughts: deleted._id } }
       );
       if (!user) {
@@ -104,7 +104,7 @@ module.exports = {
     try {
       const deleted = await Thought.findByIdAndUpdate(
         req.params.thoughtId,
-        { $pull: { reactionId: req.params.reactionId } },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { new: true }
       );
 

@@ -4,24 +4,30 @@ const { reactionSchema } = require('./Reaction');
 
 const { formatDate } = require('../helpers/dateFormat');
 
-const thoughtSchema = new Schema({
-  thoughtText: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 200,
+const thoughtSchema = new Schema(
+  {
+    thoughtText: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 200,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      get: formatDate,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    reactions: [reactionSchema],
   },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-    get: formatDate,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  reactions: [reactionSchema],
-});
+  {
+    toJSON: { getters: true }, // Enable getters when converting documents to JSON
+    toObject: { getters: true }, // Enable getters when converting documents to plain objects
+  }
+);
 
 thoughtSchema.virtual('reactionCount').get(
   function () {
