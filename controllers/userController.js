@@ -3,9 +3,18 @@ const { User, Thought } = require('../models');
 module.exports = {
   async getUsers(req, res) {
     try {
-      const users = await User.find({});
+      const users = await User.find({})
+        .select('-__v')
+        .populate([
+          { path: 'friends', select: 'username email -_id' },
+          {
+            path: 'thoughts',
+            select: 'username thoughtText reactions',
+          },
+        ]);
       res.status(200).json(users);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -21,12 +30,24 @@ module.exports = {
   },
   async getSingleUser(req, res) {
     try {
-      const oneUser = await User.find({ _id: req.params.userId });
+      const oneUser = await User.find({ _id: req.params.userId })
+        .select('-__v')
+        .populate([
+          {
+            path: 'friends',
+            select: 'username email',
+          },
+          {
+            path: 'thoughts',
+            select: 'username thoughtText reactions',
+          },
+        ]);
       if (!oneUser) {
         return res.status(400).json({ message: 'No user with that ID' });
       }
       res.status(200).json(oneUser);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -36,7 +57,7 @@ module.exports = {
       const updatedUser = await User.findByIdAndUpdate(
         req.params.userId,
         {
-          username: req.body.username,
+          thoughts: req.body.thoughts,
         },
         {
           new: true,
@@ -59,9 +80,12 @@ module.exports = {
       if (!deleted) {
         return res.status(400).json({ message: 'User not found' });
       }
-      const removeFriend = await User.updateMany(
-        { friends: req.params.userId },
-        { $pull: { friends: req.params.userId } }
+      const removeFriend = await User.updateMany({}, { $pull: { friends: req.params.userId } });
+      const removeThoughts = await Thought.deleteMany({ username: deleted.username });
+      const deleteReactions = await Thought.updateMany(
+        {},
+        { $pull: { reactions: { username: deleted.username } } },
+        { new: true }
       );
       res.status(200).json(deleted);
     } catch (error) {
@@ -80,7 +104,7 @@ module.exports = {
       );
 
       if (!friend) {
-        return res.status(400).json({ message: 'User not founrd' });
+        return res.status(400).json({ message: 'User not found' });
       }
 
       res.status(200).json(friend);
