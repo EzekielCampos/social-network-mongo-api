@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
 
+// This schema will layout the information needed to create a new User
 const userSchema = new Schema(
   {
     username: {
@@ -19,12 +20,16 @@ const userSchema = new Schema(
         message: (props) => `${props.value} is not a valid email!`,
       },
     },
+    // This will reference the Thought model which will join the two models
+    // and respond with all the data that corresponds from the Thought model
     thoughts: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Thought',
       },
     ],
+    // This model will hold other users that are friends and will respond with all the 
+    // data that is specific for each friend through the reference
     friends: [
       {
         type: Schema.Types.ObjectId,
@@ -32,6 +37,7 @@ const userSchema = new Schema(
       },
     ],
   },
+  // This will display the virtual values in the return object 
   {
     toJSON: {
       virtuals: true,
@@ -40,6 +46,7 @@ const userSchema = new Schema(
   }
 );
 
+// This virtual will return the number of friends that exist in the friends array for specific user
 userSchema.virtual('friendCount').get(function (){
   if(!this.friends){
     return 0;
