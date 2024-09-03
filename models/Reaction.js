@@ -19,6 +19,11 @@ const reactionSchema = new Schema(
       type: String,
       required: true,
     },
+    reactionBody:{
+      type: String,
+      required: true,
+      maxlength: 280,
+    }
   },
   {
     // Disable the default _id field
