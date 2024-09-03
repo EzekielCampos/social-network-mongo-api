@@ -10,16 +10,22 @@
 ## Table of Contents
 - [Description](#description)
 <br/>
+
 - [Installation](#installation)
 <br/>
+
 - [Usage](#usage)
 <br/>
+
 - [Contributing](#contributing)
 <br/>
+
 - [License](#license)
 <br/>
+
 - [Tests](#tests)
 <br/>
+
 - [Questions](#questions)
 <br/>
 
