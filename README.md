@@ -5,27 +5,20 @@
 ![Express Badge](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
-
-
 ## Table of Contents
+
 - [Description](#description)
 <br/>
-
 - [Installation](#installation)
 <br/>
-
 - [Usage](#usage)
 <br/>
-
 - [Contributing](#contributing)
 <br/>
-
 - [License](#license)
 <br/>
-
 - [Tests](#tests)
 <br/>
-
 - [Questions](#questions)
 <br/>
 
@@ -40,6 +33,8 @@ Before running this project make sure to have Node and MongoDb installed on your
 ## Usage
 
 There an option to seed the database by running the command “node seed” or “npm run seed”.  This will provide some starter data when hitting the API routes.  To start the server run the command “node server.js” or “npm run start”.  This will begin the server to begin, if it works then a message will be displayed in the terminal of which port to use.  Head over to an API development platform and begin hitting those routes! 
+### Demo Video
+[Video Link](https://drive.google.com/file/d/1sNV5Q-qAhhKLSudDqTvVZynQIrGg76K6/view)
 ## Contributing
 
 N/A
